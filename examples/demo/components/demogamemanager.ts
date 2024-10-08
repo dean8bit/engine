@@ -25,7 +25,11 @@ export class DemoGameManager extends GameManager {
   }
 
   public onStart(): void {
-    createPrefabAsync(this.node, prefabs.cube).then((n) => (this.cube = n));
+    Game.createHavok(this.node.getScene(), new BABYLON.Vector3(0, 0, 0)).then(
+      () => {
+        createPrefabAsync(this.node, prefabs.cube).then((n) => (this.cube = n));
+      }
+    );
   }
   public onUpdate(): void {}
   public onDestroy(): void {}

@@ -1,13 +1,27 @@
 import * as BABYLON from "babylonjs";
 import { GameManager } from "./gamemanager";
+import HavokPhysics, { HavokPhysicsWithBindings } from "@babylonjs/havok";
 
-export class Game extends BABYLON.Engine {
+export class Game extends BABYLON.WebGPUEngine {
   public _sceneRegistry: { [name: string]: BABYLON.Scene } = {};
   private _activeScene!: BABYLON.Scene;
-  constructor(canvas: HTMLCanvasElement, gameManager: typeof GameManager) {
+  constructor(canvas: HTMLCanvasElement) {
     console.log("CREATING GAME");
-    super(canvas, true);
+    super(canvas, {
+      antialias: true,
+      glslangOptions: {
+        jsPath: "/assets/lib/glslang.js",
+        wasmPath: "/assets/lib/glslang.wasm",
+      },
+      twgslOptions: {
+        jsPath: "/assets/lib/twgsl.js",
+        wasmPath: "/assets/lib/twgsl.wasm",
+      },
+    });
+  }
 
+  public begin(gameManager: typeof GameManager) {
+    console.log("BEGINNING GAME");
     window.addEventListener("resize", () => this.resize());
     this.onDisposeObservable.add(() => console.log("DISPOSING GAME"));
     const scene = this.createScene(gameManager);
@@ -79,5 +93,27 @@ export class Game extends BABYLON.Engine {
   ) {
     const node = new BABYLON.TransformNode("default_gamemanager", scene);
     new gameManager(this, node);
+  }
+  public static async createHavok(
+    scene: BABYLON.Scene,
+    gavity: BABYLON.Vector3
+  ): Promise<{
+    havokInstance: HavokPhysicsWithBindings;
+    havokPlugin: BABYLON.HavokPlugin;
+  }> {
+    console.log("HAVOK CREATED");
+    const havokInstance = await HavokPhysics({
+      locateFile: (path) => {
+        if (path.includes("HavokPhysics") && path.endsWith(".wasm")) {
+          return `assets/lib/${path}`;
+        }
+        return path;
+      },
+    });
+
+    const havokPlugin = new BABYLON.HavokPlugin(true, havokInstance);
+    scene.enablePhysics(gavity, havokPlugin);
+
+    return { havokInstance, havokPlugin };
   }
 }

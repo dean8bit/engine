@@ -2,5 +2,9 @@ import { Game } from "../../src/game";
 import { DemoGameManager } from "./components/demogamemanager";
 
 export const createGame = (canvas: HTMLCanvasElement): Game => {
-  return new Game(canvas, DemoGameManager);
+  const game = new Game(canvas);
+  game.initAsync().then(() => {
+    game.begin(DemoGameManager);
+  });
+  return new Game(canvas);
 };
