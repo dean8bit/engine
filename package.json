@@ -1,0 +1,21 @@
+{
+  "name": "engine",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+"dev": "npm run deps && vite --host",
+		"start": "npm install && npm run dev",
+		"build": "npm run deps && tsc && vite build && rm dist/assets/HavokPhysics.wasm",
+		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview",
+		"deps": "cp node_modules/@babylonjs/havok/lib/esm/HavokPhysics.wasm public/assets/ && wget -O public/assets/glslang.js https://preview.babylonjs.com/glslang/glslang.js && wget -O public/assets/glslang.wasm https://preview.babylonjs.com/glslang/glslang.wasm && wget -O public/assets/twgsl.js https://preview.babylonjs.com/twgsl/twgsl.js && wget -O public/assets/twgsl.wasm https://preview.babylonjs.com/twgsl/twgsl.wasm"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vite": "^5.4.8",
+    "babylonjs": "^6.46.0",
+		"babylonjs-loaders": "^6.46.0",
+    "@babylonjs/havok": "^1.3.1"
+  }
+}
