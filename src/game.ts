@@ -1,6 +1,5 @@
 import * as BABYLON from "babylonjs";
 import { GameManager } from "./gamemanager";
-import HavokPhysics, { HavokPhysicsWithBindings } from "@babylonjs/havok";
 
 export class Game extends BABYLON.Engine {
   public _sceneRegistry: { [name: string]: BABYLON.Scene } = {};
