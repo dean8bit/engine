@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-"dev": "npm run deps && vite --host",
-		"start": "npm install && npm run dev",
-		"build": "npm run deps && tsc && vite build && rm dist/assets/HavokPhysics.wasm",
+    "dev": "vite --host",
+		"build": "tsc && vite build",
 		"lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-		"preview": "vite preview",
-		"deps": "cp node_modules/@babylonjs/havok/lib/esm/HavokPhysics.wasm public/assets/ && wget -O public/assets/glslang.js https://preview.babylonjs.com/glslang/glslang.js && wget -O public/assets/glslang.wasm https://preview.babylonjs.com/glslang/glslang.wasm && wget -O public/assets/twgsl.js https://preview.babylonjs.com/twgsl/twgsl.js && wget -O public/assets/twgsl.wasm https://preview.babylonjs.com/twgsl/twgsl.wasm"
+		"preview": "vite preview"
   },
   "devDependencies": {
     "typescript": "^5.5.3",
